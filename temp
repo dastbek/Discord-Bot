@@ -1,0 +1,94 @@
+bot.on('message', message=>{
+        let args = message.content.substring(PREFIX.length).split(" ");
+        switch(args[0]){
+            case 'masscook':
+                if(args[1] == undefined || args[2] == undefined )
+                    message.channel.sendMessage(MASSCOOK_NOARGS);
+                else{
+                    var dura = args[1]/(1+9*args[2]);
+                    message.channel.sendMessage('With ' + args[1] + ' crafts and ' + args[2]*100 + '% to masscook, You need **' + dura.toFixed(0) + '** durability');
+                }
+                    
+                break;
+            case "AlchemyImp": case "Imperial": case "Imp": case "imperial": case "Alchemy": case "CookingImp": case "Cooking": case "alchemy": case "cooking":
+                {
+                    message.channel.send(Imp_Warning);
+                }
+            case 'ImpAlchemy':
+                if(!args[1])
+                {
+                    message.channel.send(Imp_Warning_Level);
+                }
+                /*********************************APPRENTICE******************************/
+                else if(args[1] == 1 || args[1] == 'apprentice')
+                {
+                    sheets.spreadsheets.values.get({
+                        spreadsheetId: '1tDKdymPEVp0aT4lOgLrzM0lrCtbnkXnnazG2GEjXbrE',
+                        range: 'Alchemy!B10:O15',
+                      }, (err, res) => {
+                        if (err) return console.log('The API returned an error: ' + err);
+                        const rows = res.data.values;});
+
+                    if (rows.length) {
+                        console.log('Major'); // just checking
+                        let sEmbed = new Discord.RichEmbed();
+                        sEmbed.setColor('#24993d'); //green
+                        sEmbed.setTitle("Apprentice Imperial Profit");
+                        
+                        // Print columns A and E, which correspond to indices 0 and 4.
+                        var silver_largest = 0;
+                        var name_largest = '';
+                        rows.map((row) => {
+                            let temp_row = parseInt(row[12], 10);
+                            if(temp_row>silver_largest){
+                                silver_largest = temp_row; // get largest value
+                                name_largest = row[0];
+                              }
+                          console.log(`${row[12]}, ${row[13]}`);
+                          sEmbed.addField(row[0], row[12], true);
+                        
+                        });
+                        sEmbed.addField('Most profitable', name_largest + "\t\t" + silver_largest , true);
+                        message.channel.send({embed: sEmbed});
+                      } else {
+                        console.log('No data found.');
+                      }
+                }
+
+                /*********************************SKILLED******************************/
+                else if(args[1] == 2 || args[1] == 'skilled' || args[1] == 'SKILLED' || args[1] == 'Skilled')
+                {
+                     
+
+                    if (rows_skilled.length) {
+                        console.log('Major'); // just checking
+                        let sEmbed = new Discord.RichEmbed();
+                        sEmbed.setColor('#33a3ff'); //blue
+                        sEmbed.setTitle("Skilled Imperial Profit");
+                        
+                        // Print columns A and E, which correspond to indices 0 and 4.
+                        var silver_largest = 0;
+                        var name_largest = '';
+                        rows_skilled.map((row) => {
+                            let temp_row = parseInt(row[12], 10);
+                            if(temp_row>silver_largest){
+                                silver_largest = temp_row; // get largest value
+                                name_largest = row[0];
+                              }
+                          console.log(`${row[12]}, ${row[13]}`);
+                          sEmbed.addField(row[0], row[12], true);
+                        
+                        });
+                        sEmbed.addField('Most profitable', name_largest, true);
+                        message.channel.send({embed: sEmbed});
+                      } else {
+                        console.log('No data found.');
+                      }
+                }
+                /*********************************SKILLED******************************/
+                /*********************************SKILLED******************************/
+                /*********************************SKILLED******************************/
+                /*********************************SKILLED******************************/
+                break;
+        }
+    })
